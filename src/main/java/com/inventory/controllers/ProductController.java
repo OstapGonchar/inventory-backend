@@ -24,24 +24,19 @@ public class ProductController {
         return productService.listOfProducts();
     }
 
-    @PostMapping("/post")
-    public List<Product> postProducts() {
-        return productService.postProducts();
+    @PostMapping("/{id}")
+    public void updateProduct(@RequestBody Product product, @PathVariable("id") String id) {
+        productService.updateProduct(product, id);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteProduct(@PathVariable("id") String id) {
-        listOfProducts().remove(new String((id)));
+        productService.deleteProduct(id);
     }
 
-  /*  @DeleteMapping("/delete/{id}")
-    public boolean deleteProduct(@PathVariable("id") String id) {
-       return listOfProducts().remove(new String((id)));
-    }
-*/
-    @PutMapping("/add/{id}")
-    public void updateProduct(@PathVariable("id") String id) {
-        listOfProducts().add(new Product("4", "valve", "ball-valve", 10.0, "$", 4));
+    @PutMapping()
+    public void addProduct(@RequestBody Product product) {
+        productService.addProduct(product);
     }
 
 }
