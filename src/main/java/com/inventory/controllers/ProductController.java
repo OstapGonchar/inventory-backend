@@ -1,7 +1,7 @@
-package com.example.inventory.controllers;
+package com.inventory.controllers;
 
-import com.example.inventory.Product;
-import com.example.inventory.services.ProductService;
+import com.inventory.Product;
+import com.inventory.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

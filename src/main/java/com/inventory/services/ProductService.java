@@ -1,6 +1,6 @@
-package com.example.inventory.services;
+package com.inventory.services;
 
-import com.example.inventory.Product;
+import com.inventory.Product;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
