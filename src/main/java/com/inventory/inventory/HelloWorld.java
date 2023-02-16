@@ -1,4 +1,4 @@
-package com.example.inventory;
+package com.inventory.inventory;
 
 public class HelloWorld {
     public static void main(String[] args) {

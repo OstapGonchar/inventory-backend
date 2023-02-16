@@ -1,5 +1,6 @@
 package com.example.inventory;
 
+import com.inventory.inventory.HelloWorld;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
