@@ -20,12 +20,14 @@ public class InventoryApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		Offer offer = Offer.builder()
-				.name("Offer for Ostap")
-				.description("Bla bla bla")
-				.client("Ostap")
-				.build();
-		offerRepository.save(offer);
+		if (offerRepository.findByClient("Ostap").isEmpty()) {
+			Offer offer = Offer.builder()
+					.name("Offer for Ostap")
+					.description("Bla bla bla")
+					.client("Ostap")
+					.build();
+			offerRepository.save(offer);
+		}
 	}
 }
 
