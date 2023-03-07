@@ -18,7 +18,17 @@ public class StringController {
      */
     @GetMapping("/to-underscore")
     public String transformToUnderscore(@RequestParam(name = "input") String camelCase) {
-        //TODO implement
-        return "";
+        String result = "";
+        char c = camelCase.charAt(0);
+        result = result + Character.toLowerCase(c);
+        for (int i = 1; i < camelCase.length(); i++) {
+            char ch = camelCase.charAt(i);
+            if (Character.isUpperCase(ch)) {
+                result = result + '_'+ Character.toLowerCase(ch);
+            }  else {
+                result = result + ch;
+            }
+        }
+        return result;
     }
 }

@@ -2,13 +2,13 @@ package com.inventory.controllers;
 
 import com.inventory.entities.Offer;
 import com.inventory.services.OfferService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Data
 @RestController
 @RequestMapping("/api/offer")
 public class OfferController {
@@ -19,8 +19,39 @@ public class OfferController {
         this.offerService = offerService;
     }
 
+
     @GetMapping("/all")
     public List<Offer> offers() {
         return offerService.offers();
     }
+
+
+
+    @PutMapping("/put")
+    public void addOffer(@RequestBody Offer offer) {
+        offerService.addOffer(offer);
+    }
+
+
+    @PostMapping("/change/{id}")
+    public void updateOffer(@PathVariable long id, @RequestBody Offer offerDetails) {
+     offerService.updateOffer(offerDetails, id);
+        }
+
+        @DeleteMapping("/delete/{id}")
+    public void deleteOffer(@PathVariable long id) {
+        offerService.deleteOffer(id);
+        }
+
+
+
+ /*   @PostMapping("/update/{id}")
+    public void newOffer(@RequestBody Offer offer, @PathVariable("id") String id)  {
+       offerService.create(offer, id);
+}*/
+
+   /* @PutMapping()
+    public void addProduct(@RequestBody Product product) {
+        productService.addProduct(product);
+    }*/
 }
