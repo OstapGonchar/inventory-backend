@@ -17,7 +17,7 @@ public class StringController {
      * @return ostap_gonchar_koza
      */
     @GetMapping("/to-underscore")
-    public String transformToUnderscore(@RequestParam(name = "input") String camelCase) {
+   /* public String transformToUnderscore(@RequestParam(name = "input") String camelCase) {
         String result = "";
         char c = camelCase.charAt(0);
         result = result + Character.toLowerCase(c);
@@ -30,5 +30,30 @@ public class StringController {
             }
         }
         return result;
-    }
+    }*/
+
+   /* public String transformToUnderscore(@RequestParam(name = "input") String camelCase) {
+        return camelCase.chars() // Step 1: Get a stream of characters from the input string
+                .mapToObj(ch -> Character.isUpperCase((char) ch) ? "_" + Character.toLowerCase((char) ch) : Character.toString((char) ch)) // Step 2: For each character, map it to either itself or a string containing the lowercase version of the character preceded by an underscore, depending on whether it is uppercase or not.
+                .collect(Collectors.joining()); Step 3: Join the resulting strings together into a single string.
+    }*/
+
+        public String transformToUnderscore(@RequestParam(name = "input") String camelCase) {
+            // Regular Expression
+            String regex = "([a-z])([A-Z]+)";
+            // Replacement string
+            String replacement = "$1_$2";
+           // Replace the given regex
+            // with replacement string
+            // and convert it to lower case.
+            camelCase = camelCase
+                    .replaceAll(
+                            regex, replacement)
+                    .toLowerCase();
+
+            // return string
+            return camelCase;
+        }
 }
+
+
