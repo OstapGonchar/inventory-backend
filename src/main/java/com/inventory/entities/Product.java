@@ -1,4 +1,4 @@
-package com.inventory;
+package com.inventory.entities;
 
 public record Product(
         String id,

@@ -1,6 +1,6 @@
 package com.inventory.controllers;
 
-import com.inventory.Product;
+import com.inventory.entities.Product;
 import com.inventory.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +17,6 @@ public class ProductController {
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
-
 
     @GetMapping("/all")
     public List<Product> listOfProducts() {
