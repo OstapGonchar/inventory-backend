@@ -24,17 +24,17 @@ public class OfferController {
         return offerService.offers();
     }
 
-    @PutMapping("/put")
+    @PutMapping()
     public void addOffer(@RequestBody Offer offer) {
         offerService.addOffer(offer);
     }
 
-    @PostMapping("/change/{id}")
+    @PostMapping("/{id}")
     public void updateOffer(@PathVariable long id, @RequestBody Offer offerDetails) {
         offerService.updateOffer(offerDetails, id);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public void deleteOffer(@PathVariable long id) {
         offerService.deleteOffer(id);
     }
