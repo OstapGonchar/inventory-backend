@@ -18,7 +18,7 @@ public class OfferService {
     }
 
 
-   public void updateOffer(Offer offer, Long id) {
+    public void updateOffer(Offer offer, Long id) {
         Offer updateOffer = offerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not exist with id: " + id));
         updateOffer.setName(offer.getName());
@@ -29,7 +29,7 @@ public class OfferService {
         updateOffer.setDiscount(offer.getDiscount());
         updateOffer.setStatus(offer.getStatus());
         offerRepository.save(offer);
-           }
+    }
 
     public List<Offer> offers() {
         return offerRepository.findAll();
@@ -43,33 +43,7 @@ public class OfferService {
         offerRepository.deleteById(id);
     }
 
-
-
-
-
-  /*  public void addOffer(Offer offer) {
-        offerRepository.
-    }
-
-    public void create(Offer offer, String id) {
-        offer.delete(id);
-        addOffer(offer);
-    }*/
-
-
-    /*    public ResponseEntity<Employee> updateEmployee(@PathVariable long id,@RequestBody Employee employeeDetails) {
-            Employee updateEmployee = employeeRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Employee not exist with id: " + id));
-
-            updateEmployee.setFirstName(employeeDetails.getFirstName());
-            updateEmployee.setLastName(employeeDetails.getLastName());
-            updateEmployee.setEmailId(employeeDetails.getEmailId());
-
-            employeeRepository.save(updateEmployee);
-
-            return ResponseEntity.ok(updateEmployee);*/
-
-    }
+}
 
 
 
