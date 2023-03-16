@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class StringController {
 
     /**
-     *  Should convert camelCase to underscore lowercase convention
-     *  localhost:8080/api/string/to-underscore?input=ostapGonchar
+     * Should convert camelCase to underscore lowercase convention
+     * localhost:8080/api/string/to-underscore?input=ostapGonchar
      *
      * @param camelCase e.g. ostapGoncharKoza
      * @return ostap_gonchar_koza
@@ -24,8 +24,8 @@ public class StringController {
         for (int i = 1; i < camelCase.length(); i++) {
             char ch = camelCase.charAt(i);
             if (Character.isUpperCase(ch)) {
-                result = result + '_'+ Character.toLowerCase(ch);
-            }  else {
+                result = result + '_' + Character.toLowerCase(ch);
+            } else {
                 result = result + ch;
             }
         }
