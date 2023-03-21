@@ -2,7 +2,7 @@
 package com.inventory;
 
 import com.inventory.entities.Offer;
-import com.inventory.entities.ProductEntity;
+import com.inventory.entities.Product;
 import com.inventory.repositories.OfferRepository;
 import com.inventory.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +35,9 @@ public class InventoryApplication implements CommandLineRunner {
             offerRepository.save(offer);
         }
         if (productRepository.findAll().isEmpty()) {
-            productRepository.save(new ProductEntity(1, "boiler", "heat-water boiler", BigDecimal.valueOf(100.0), "USD", 3));
-            productRepository.save(new ProductEntity(2, "tank", "softened-water tank", BigDecimal.valueOf(20.0), "USD", 2));
-            productRepository.save(new ProductEntity(3, "pump", "cold water pump", BigDecimal.valueOf(40.0), "USD", 3));
+            productRepository.save(new Product(1L, "boiler", "heat-water boiler", BigDecimal.valueOf(100.0), "USD", 3));
+            productRepository.save(new Product(2L, "tank", "softened-water tank", BigDecimal.valueOf(20.0), "USD", 2));
+            productRepository.save(new Product(3L, "pump", "cold water pump", BigDecimal.valueOf(40.0), "USD", 3));
         }
     }
 }

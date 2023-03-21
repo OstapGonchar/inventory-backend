@@ -1,8 +1,6 @@
 package com.inventory.services;
 
-//import com.inventory.entities.Product;
-
-import com.inventory.entities.ProductEntity;
+import com.inventory.entities.Product;
 import com.inventory.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +18,11 @@ public class ProductService {
     }
 
 
-    public List<ProductEntity> listOfProducts() {
+    public List<Product> listOfProducts() {
         return productRepository.findAll();
     }
 
-    public void addProduct(ProductEntity product) {
+    public void addProduct(Product product) {
         productRepository.save(product);
     }
 
@@ -43,12 +41,8 @@ public class ProductService {
         }
     }
 
-    /*    public void updateProduct(ProductEntity product, Long id) {
-            deleteProduct(id);
-            addProduct(product);
-        }*/
-    public void updateProduct(ProductEntity product, Long id) {
-        ProductEntity updateProduct = productRepository.findById(id)
+    public void updateProduct(Product product, Long id) {
+        Product updateProduct = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not exist with id: " + id));
         updateProduct.setName(product.getName());
         updateProduct.setDescription(product.getDescription());

@@ -1,6 +1,6 @@
 package com.inventory.controllers;
 
-import com.inventory.entities.ProductEntity;
+import com.inventory.entities.Product;
 import com.inventory.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,12 +19,12 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public List<ProductEntity> listOfProducts() {
+    public List<Product> listOfProducts() {
         return productService.listOfProducts();
     }
 
     @PostMapping("/{id}")
-    public void updateProduct(@RequestBody ProductEntity product, @PathVariable("id") Long id) {
+    public void updateProduct(@RequestBody Product product, @PathVariable("id") Long id) {
         productService.updateProduct(product, id);
     }
 
@@ -34,7 +34,7 @@ public class ProductController {
     }
 
     @PutMapping()
-    public void addProduct(@RequestBody ProductEntity product) {
+    public void addProduct(@RequestBody Product product) {
         productService.addProduct(product);
     }
 

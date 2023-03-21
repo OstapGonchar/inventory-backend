@@ -1,17 +1,16 @@
 package com.inventory.repositories;
 
-import com.inventory.entities.ProductEntity;
+import com.inventory.entities.Product;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface ProductRepository extends CrudRepository<ProductEntity, Long> {
+public interface ProductRepository extends CrudRepository<Product, Long> {
 
-    List<ProductEntity> findAll();
+    List<Product> findAll();
 
-    List<ProductEntity> findByName(String name);
+    List<Product> findByName(String name);
 
-    List<ProductEntity> findByClient(String client);
 }

@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 public class Offer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
     @Column(nullable = false)
     private String name;
     private String description;
