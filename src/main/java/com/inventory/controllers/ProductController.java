@@ -1,6 +1,5 @@
 package com.inventory.controllers;
 
-import com.inventory.entities.Product;
 import com.inventory.entities.ProductEntity;
 import com.inventory.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,17 +24,17 @@ public class ProductController {
     }
 
     @PostMapping("/{id}")
-    public void updateProduct(@RequestBody Product product, @PathVariable("id") String id) {
+    public void updateProduct(@RequestBody ProductEntity product, @PathVariable("id") Long id) {
         productService.updateProduct(product, id);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable("id") String id) {
+    public void deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);
     }
 
     @PutMapping()
-    public void addProduct(@RequestBody Product product) {
+    public void addProduct(@RequestBody ProductEntity product) {
         productService.addProduct(product);
     }
 

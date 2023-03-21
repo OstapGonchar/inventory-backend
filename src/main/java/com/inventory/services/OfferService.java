@@ -39,11 +39,22 @@ public class OfferService {
         offerRepository.save(offer);
     }
 
-    public void deleteOffer(long id) {
-        offerRepository.deleteById(id);
+    public void deleteOffer(Long id) {
+        int position = -1;
+        for (int i = 0; i < offers().size(); i++) {
+            if (id == offers().get(i).id()) {
+                position = i;
+                break;
+            }
+        }
+        if (position != -1) {
+            offerRepository.deleteById(id);
+        } else {
+            //TODO: Add error 401
+        }
     }
-
 }
+
 
 
 
