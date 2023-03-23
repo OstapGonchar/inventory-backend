@@ -9,6 +9,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/string")
 public class StringController {
 
+    /**
+     * Should convert camelCase to underscore lowercase convention
+     * localhost:8080/api/string/to-underscore?input=ostapGonchar
+     *
+     * @param camelCase e.g. ostapGoncharKoza
+     * @return ostap_gonchar_koza
+     */
     @GetMapping("/to-underscore")
     public String transformToUnderscore(@RequestParam(name = "input") String camelCase) {
         String result = "";
