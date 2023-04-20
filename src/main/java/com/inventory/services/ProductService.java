@@ -17,7 +17,6 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-
     public List<Product> listOfProducts() {
         return productRepository.findAll();
     }
@@ -27,17 +26,10 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
-        int position = -1;
-        for (int i = 0; i < listOfProducts().size(); i++) {
-            if (id == listOfProducts().get(i).id()) {
-                position = i;
-                break;
-            }
-        }
-        if (position != -1) {
+        if (productRepository.findById(id).isPresent()) {
             productRepository.deleteById(id);
         } else {
-            //TODO: Add error 401
+            //error
         }
     }
 
@@ -46,7 +38,7 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not exist with id: " + id));
         updateProduct.setName(product.getName());
         updateProduct.setDescription(product.getDescription());
-        updateProduct.setAmount(product.getAmount());
+        updateProduct.setQuantity(product.getQuantity());
         updateProduct.setCurrency(product.getCurrency());
         updateProduct.setQuantity(product.getQuantity());
         productRepository.save(product);

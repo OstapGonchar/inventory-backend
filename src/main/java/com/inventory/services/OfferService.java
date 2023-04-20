@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class OfferService {
@@ -35,22 +36,15 @@ public class OfferService {
         return offerRepository.findAll();
     }
 
-    public void addOffer(Offer offer) {
-        offerRepository.save(offer);
+    public Offer addOffer(Offer offer) {
+        return offerRepository.save(offer);
     }
 
     public void deleteOffer(Long id) {
-        int position = -1;
-        for (int i = 0; i < offers().size(); i++) {
-            if (id == offers().get(i).id()) {
-                position = i;
-                break;
-            }
-        }
-        if (position != -1) {
+        if (offerRepository.findById(id).isPresent()) {
             offerRepository.deleteById(id);
         } else {
-            //TODO: Add error 401
+            //error
         }
     }
 }
