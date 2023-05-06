@@ -6,8 +6,6 @@ import com.inventory.repositories.ProductRepository;
 import com.inventory.requests.OfferRequest;
 import com.inventory.requests.ProductRequest;
 import com.inventory.services.OfferService;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,8 +18,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -69,9 +67,9 @@ class OfferControllerTest {
         assertEquals(BigDecimal.valueOf(60), offer.getTotalAmount());
     }
 
-    @Disabled
+
     @Test
-    void shouldNotCreateOfferFromOfferRequestWhenQuantityIsNotEnough() {
+    void shouldNotCreateOfferFromOfferRequestWhenQuantityIsNotEnough() throws RuntimeException {
         //given
         OfferRequest offerRequest = OfferRequest.builder()
                 .name("Offer for Ostap")
@@ -88,18 +86,19 @@ class OfferControllerTest {
                 .id(2L)
                 .name("P2")
                 .price(BigDecimal.TEN)
-                .quantity(5)
+                .quantity(4)
                 .build();
         when(productRepository.findById(1L))
                 .thenReturn(Optional.of(product1));
         when(productRepository.findById(2L))
                 .thenReturn(Optional.of(product2));
-        when(offerService.addOffer(any(Offer.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));
+       /*when(offerService.addOffer(any(Offer.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));*/
 
         //when
         //then
         RuntimeException exception = assertThrows(RuntimeException.class, () -> offerController.addOffer(offerRequest));
-        assertEquals("Quantity of Product 1 is not sufficient", exception.getMessage());
+        assertEquals("Quantity of Product 2 is not sufficient", exception.getMessage());
+        verify(productRepository, times(2)).findById(anyLong());
     }
 }

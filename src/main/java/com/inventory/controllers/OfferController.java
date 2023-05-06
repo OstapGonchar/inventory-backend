@@ -2,7 +2,6 @@ package com.inventory.controllers;
 
 import com.inventory.entities.Offer;
 import com.inventory.entities.Product;
-import com.inventory.repositories.OfferRepository;
 import com.inventory.repositories.ProductRepository;
 import com.inventory.requests.OfferRequest;
 import com.inventory.requests.ProductRequest;
@@ -63,6 +62,13 @@ public class OfferController {
             Product product = productRepository.findById(productRequest.getId())
                     .orElseThrow(() -> new RuntimeException("Product not found with id: " + productRequest.getId()));
             products.add(product);
+            // TODO:
+            int requestedQuantity = productRequest.getQuantity();
+            int availableQuantity = product.getQuantity();
+            if (requestedQuantity > availableQuantity) {
+                throw new RuntimeException("Quantity of Product " + product.getId() + " is not sufficient");
+            }
+
 
             int quantity = productRequest.getQuantity();
             BigDecimal price = product.getPrice();

@@ -51,7 +51,7 @@ public class Offer {
                     referencedColumnName = "id",
                     foreignKey = @ForeignKey(
                             name = "fk_offer_products_product_id",
-                            foreignKeyDefinition = "FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE RESTRICT)"
+                            foreignKeyDefinition = "FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE RESTRICT"
                     )
             )
     )
