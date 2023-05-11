@@ -5,5 +5,9 @@ Follow the steps:
 3. Launch IntelliJ and open Project
 4. Open File->Project Structure -> Add SDK as on screenshot ![0.png](instructions/0.png)
 5. Run->Run configurations->Create maven config as on screenshot->Run ![1.png](instructions/1.png)
-6. Open file [InventoryApplication](src/main/java/com/inventory/InventoryApplication.java)
-7. And click Run (green arrow) as on screenshot ![2.png](instructions/2.png)
+6. In inventory-backend via Terminal call `docker compose up -d` in order to launch DB. 
+7. PgAdmin can be accessed via http://localhost:5050/browser/.
+8. Register new Server there:![img.png](instructions/postgres_server.png)
+9. Create new **inventory** database there: ![img.png](instructions/postgres_db.png)
+8. Open file [InventoryApplication](src/main/java/com/inventory/InventoryApplication.java)
+9. And click Run (green arrow) as on screenshot ![2.png](instructions/2.png)
