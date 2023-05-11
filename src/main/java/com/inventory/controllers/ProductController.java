@@ -24,12 +24,12 @@ public class ProductController {
     }
 
     @PostMapping("/{id}")
-    public void updateProduct(@RequestBody Product product, @PathVariable("id") String id) {
+    public void updateProduct(@RequestBody Product product, @PathVariable("id") Long id) {
         productService.updateProduct(product, id);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProduct(@PathVariable("id") String id) {
+    public void deleteProduct(@PathVariable("id") Long id) {
         productService.deleteProduct(id);
     }
 

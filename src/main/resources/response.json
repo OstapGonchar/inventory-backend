@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "validationMessage": [],
+  "result": {
+    "from": "EUR",
+    "to": "KWD",
+    "amountToConvert": 10,
+    "convertedAmount": 3.3477833588119674
+  }
+}
