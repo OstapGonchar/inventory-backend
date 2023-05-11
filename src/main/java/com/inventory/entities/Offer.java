@@ -46,14 +46,7 @@ public class Offer {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "offer_product",
             joinColumns = @JoinColumn(name = "offer_id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "product_id",
-                    referencedColumnName = "id",
-                    foreignKey = @ForeignKey(
-                            name = "fk_offer_products_product_id",
-                            foreignKeyDefinition = "FOREIGN KEY (product_id) REFERENCES product (id) ON DELETE RESTRICT"
-                    )
-            )
+            inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Product> products = new ArrayList<>();
 }

@@ -2,13 +2,18 @@ package com.inventory.controllers;
 
 import com.inventory.entities.Offer;
 import com.inventory.entities.Product;
+import com.inventory.exceptions.BadInputException;
 import com.inventory.repositories.ProductRepository;
 import com.inventory.requests.OfferRequest;
 import com.inventory.requests.ProductRequest;
+import com.inventory.responses.CurrencyExchangeResponse;
 import com.inventory.services.OfferService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.RequestEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,20 +26,19 @@ public class OfferController {
     private final OfferService offerService;
     private final ProductRepository productRepository;
 
+    private final RestTemplate restTemplate;
+
+
     @Autowired
-    public OfferController(OfferService offerService, ProductRepository productRepository) {
+    public OfferController(OfferService offerService, ProductRepository productRepository, RestTemplate restTemplate) {
         this.offerService = offerService;
         this.productRepository = productRepository;
+        this.restTemplate = restTemplate;
     }
 
     @GetMapping("/all")
     public List<Offer> offers() {
         return offerService.offers();
-    }
-
-    @PutMapping()
-    public void addOffer(@RequestBody Offer offer) {
-        offerService.addOffer(offer);
     }
 
     @PostMapping("/{id}")
@@ -49,6 +53,7 @@ public class OfferController {
 
     @PostMapping()
     public Offer addOffer(@RequestBody OfferRequest offerRequest) {
+        //TODO: Sergii: Entire business logic should be in service.
         Offer offer = Offer.builder()
                 .name(offerRequest.getName())
                 .description(offerRequest.getDescription())
@@ -60,26 +65,37 @@ public class OfferController {
         BigDecimal totalAmount = BigDecimal.ZERO;
         for (ProductRequest productRequest : offerRequest.getProducts()) {
             Product product = productRepository.findById(productRequest.getId())
-                    .orElseThrow(() -> new RuntimeException("Product not found with id: " + productRequest.getId()));
-            products.add(product);
-            // TODO:
+                    .orElseThrow(() -> new BadInputException("Product not found with id: " + productRequest.getId()));
+
             int requestedQuantity = productRequest.getQuantity();
             int availableQuantity = product.getQuantity();
             if (requestedQuantity > availableQuantity) {
-                throw new RuntimeException("Quantity of Product " + product.getId() + " is not sufficient");
+                throw new BadInputException("Quantity of Product " + product.getId() + " is not sufficient");
             }
 
-
-            int quantity = productRequest.getQuantity();
             BigDecimal price = product.getPrice();
-            BigDecimal productTotalAmount = price.multiply(BigDecimal.valueOf(quantity));
+            BigDecimal convertedPrice = convert(product.getCurrency(), offer.getTotalCurrency(), price);
+            BigDecimal productTotalAmount = convertedPrice.multiply(BigDecimal.valueOf(requestedQuantity));
             totalAmount = totalAmount.add(productTotalAmount);
+            //TODO: Ostap: This is a bug, should not update products quantity.
+            product.setQuantity(requestedQuantity);
+            products.add(product);
         }
 
         offer.setProducts(products);
         offer.setTotalAmount(totalAmount);
 
         return offerService.addOffer(offer);
+    }
+
+    private BigDecimal convert(String fromCurrency, String toCurrency, BigDecimal amount) {
+        //TODO Sergii: move to separate Service
+        RequestEntity<Void> requestEntity = RequestEntity.get("https://currency-converter18.p.rapidapi.com/api/v1/convert?from={fromCurrency}&to={toCurrency}&amount={amount}", fromCurrency, toCurrency, amount)
+                .header("X-RapidAPI-Key", "0a83e848e8mshe0477d46cde4ac7p180993jsn813f039b57fb")
+                .header("X-RapidAPI-Host", "currency-converter18.p.rapidapi.com")
+                .build();
+        ResponseEntity<CurrencyExchangeResponse> response = restTemplate.exchange(requestEntity, CurrencyExchangeResponse.class);
+        return BigDecimal.valueOf(response.getBody().getResult().getConvertedAmount());
     }
 
 }

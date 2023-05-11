@@ -2,6 +2,7 @@ package com.inventory.controllers;
 
 import com.inventory.entities.Offer;
 import com.inventory.entities.Product;
+import com.inventory.exceptions.BadInputException;
 import com.inventory.repositories.ProductRepository;
 import com.inventory.requests.OfferRequest;
 import com.inventory.requests.ProductRequest;
@@ -80,24 +81,22 @@ class OfferControllerTest {
                 .id(1L)
                 .name("P1")
                 .price(BigDecimal.TEN)
-                .quantity(1)
+                .quantity(4)
                 .build();
         Product product2 = Product.builder()
                 .id(2L)
                 .name("P2")
                 .price(BigDecimal.TEN)
-                .quantity(4)
+                .quantity(1)
                 .build();
         when(productRepository.findById(1L))
                 .thenReturn(Optional.of(product1));
         when(productRepository.findById(2L))
                 .thenReturn(Optional.of(product2));
-       /*when(offerService.addOffer(any(Offer.class)))
-                .thenAnswer(invocation -> invocation.getArgument(0));*/
 
         //when
         //then
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> offerController.addOffer(offerRequest));
+        RuntimeException exception = assertThrows(BadInputException.class, () -> offerController.addOffer(offerRequest));
         assertEquals("Quantity of Product 2 is not sufficient", exception.getMessage());
         verify(productRepository, times(2)).findById(anyLong());
     }
