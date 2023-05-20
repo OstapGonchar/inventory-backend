@@ -7,7 +7,6 @@ import com.inventory.repositories.ProductRepository;
 import com.inventory.requests.OfferRequest;
 import com.inventory.requests.ProductRequest;
 import com.inventory.services.OfferService;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,7 +24,7 @@ import static org.mockito.Mockito.*;
 
 
 @ExtendWith(MockitoExtension.class)
-@Disabled //TODO: Ostap to fix it
+
 class OfferControllerTest {
     @Mock
     private OfferService offerService;
@@ -36,7 +35,7 @@ class OfferControllerTest {
 
 
     @Test
-    void shouldCreateOfferFromOfferRequest() {
+    void shouldCreateOfferFromOfferRequest(){
         //given
         OfferRequest offerRequest = OfferRequest.builder()
                 .name("Offer for Ostap")

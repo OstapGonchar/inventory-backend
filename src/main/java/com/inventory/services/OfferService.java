@@ -64,7 +64,6 @@ public class OfferService {
     }
 
     public BigDecimal convertCurrency(String fromCurrency, String toCurrency, BigDecimal amount) {
-        //TODO Sergii: move to separate Service
         RequestEntity<Void> requestEntity = RequestEntity.get("https://currency-converter18.p.rapidapi.com/api/v1/convert?from={fromCurrency}&to={toCurrency}&amount={amount}", fromCurrency, toCurrency, amount)
                 .header("X-RapidAPI-Key", "0a83e848e8mshe0477d46cde4ac7p180993jsn813f039b57fb")
                 .header("X-RapidAPI-Host", "currency-converter18.p.rapidapi.com")
@@ -73,8 +72,7 @@ public class OfferService {
         return BigDecimal.valueOf(response.getBody().getResult().getConvertedAmount());
     }
 
-    public Offer addNewOffer(@RequestBody OfferRequest offerRequest) {
-        //TODO: Sergii: Entire business logic should be in service.
+    public Offer addNewOffer(@RequestBody OfferRequest offerRequest) throws BadInputException {
         Offer offer = Offer.builder()
                 .name(offerRequest.getName())
                 .description(offerRequest.getDescription())

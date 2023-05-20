@@ -1,13 +1,12 @@
 package com.inventory.controllers;
 
 import com.inventory.entities.Offer;
-import com.inventory.repositories.ProductRepository;
+import com.inventory.exceptions.BadInputException;
 import com.inventory.requests.OfferRequest;
 import com.inventory.services.OfferService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,16 +16,11 @@ import java.util.List;
 @RequestMapping("/api/offer")
 public class OfferController {
     private final OfferService offerService;
-    private final ProductRepository productRepository;
-
-    private final RestTemplate restTemplate;
-
 
     @Autowired
-    public OfferController(OfferService offerService, ProductRepository productRepository, RestTemplate restTemplate) {
+    public OfferController(OfferService offerService) {
         this.offerService = offerService;
-        this.productRepository = productRepository;
-        this.restTemplate = restTemplate;
+
     }
 
     @GetMapping("/all")
@@ -45,7 +39,7 @@ public class OfferController {
     }
 
     @PostMapping()
-       public Offer addOffer(@RequestBody OfferRequest offerRequest) {
+       public Offer addOffer(@RequestBody OfferRequest offerRequest) throws BadInputException {
         return offerService.addNewOffer(offerRequest);}
 
    private BigDecimal convert(String fromCurrency, String toCurrency, BigDecimal amount) {
