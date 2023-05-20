@@ -6,12 +6,9 @@ import com.inventory.exceptions.BadInputException;
 import com.inventory.repositories.ProductRepository;
 import com.inventory.requests.OfferRequest;
 import com.inventory.requests.ProductRequest;
-import com.inventory.responses.CurrencyExchangeResponse;
 import com.inventory.services.OfferService;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -88,14 +85,12 @@ public class OfferController {
         return offerService.addOffer(offer);
     }
 
-    private BigDecimal convert(String fromCurrency, String toCurrency, BigDecimal amount) {
-        //TODO Sergii: move to separate Service
-        RequestEntity<Void> requestEntity = RequestEntity.get("https://currency-converter18.p.rapidapi.com/api/v1/convert?from={fromCurrency}&to={toCurrency}&amount={amount}", fromCurrency, toCurrency, amount)
-                .header("X-RapidAPI-Key", "0a83e848e8mshe0477d46cde4ac7p180993jsn813f039b57fb")
-                .header("X-RapidAPI-Host", "currency-converter18.p.rapidapi.com")
-                .build();
-        ResponseEntity<CurrencyExchangeResponse> response = restTemplate.exchange(requestEntity, CurrencyExchangeResponse.class);
-        return BigDecimal.valueOf(response.getBody().getResult().getConvertedAmount());
-    }
+
+   /* public Offer addOffer(@RequestBody OfferRequest offerRequest) {
+        return offerService.addOffer(offerRequest);*/
+   private BigDecimal convert(String fromCurrency, String toCurrency, BigDecimal amount) {
+       return  offerService.convertCurrency(fromCurrency, toCurrency, amount);
+   }
+
 
 }
