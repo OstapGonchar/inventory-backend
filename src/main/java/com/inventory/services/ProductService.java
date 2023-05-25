@@ -34,15 +34,9 @@ public class ProductService {
     }
 
     public void updateProduct(Product product, Long id) {
-        Product updateProduct = productRepository.findById(id)
+        productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not exist with id: " + id));
-        updateProduct.setName(product.getName());
-        updateProduct.setDescription(product.getDescription());
-        updateProduct.setQuantity(product.getQuantity());
-        updateProduct.setCurrency(product.getCurrency());
-        updateProduct.setQuantity(product.getQuantity());
         productRepository.save(product);
-
     }
 }
 
