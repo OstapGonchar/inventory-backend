@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfig {
-    private final String[] allowedOrigins = {"http://localhost:4200"};
+    private final String[] allowedOrigins = {"http://localhost:4200", "http://localhost:3000"};
 
     @Profile("dev")
     @Bean
