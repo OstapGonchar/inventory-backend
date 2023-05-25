@@ -1,17 +1,22 @@
-package com.inventory.controllers;
+package com.inventory.services;
 
 import com.inventory.entities.Offer;
 import com.inventory.entities.Product;
 import com.inventory.exceptions.BadInputException;
+import com.inventory.repositories.OfferRepository;
 import com.inventory.repositories.ProductRepository;
 import com.inventory.requests.OfferRequest;
 import com.inventory.requests.ProductRequest;
-import com.inventory.services.OfferService;
+import com.inventory.responses.CurrencyExchangeResponse;
+import com.inventory.responses.CurrencyExchangeResult;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,23 +24,27 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
-
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-
-class OfferControllerTest {
+class OfferServiceTest {
     @Mock
-    private OfferService offerService;
+    private OfferRepository offerRepository;
     @Mock
     private ProductRepository productRepository;
+    @Mock
+    private RestTemplate restTemplate;
     @InjectMocks
-    private OfferController offerController;
+    private OfferService offerService;
 
 
     @Test
-    void shouldCreateOfferFromOfferRequest(){
+    void shouldCreateOfferFromOfferRequest() {
         //given
         OfferRequest offerRequest = OfferRequest.builder()
                 .name("Offer for Ostap")
@@ -58,15 +67,21 @@ class OfferControllerTest {
                 .thenReturn(Optional.of(product1));
         when(productRepository.findById(2L))
                 .thenReturn(Optional.of(product2));
-        when(offerService.addOffer(any(Offer.class)))
+        CurrencyExchangeResponse currencyExchangeResponse = CurrencyExchangeResponse.builder()
+                .result(CurrencyExchangeResult.builder()
+                        .convertedAmount(0.0)
+                        .build())
+                .build();
+        when(restTemplate.exchange(any(), eq(CurrencyExchangeResponse.class)))
+                .thenReturn(new ResponseEntity<>(currencyExchangeResponse, HttpStatusCode.valueOf(200)));
+        when(offerRepository.save(any(Offer.class)))
                 .thenAnswer(invocation -> invocation.getArgument(0));
 
         //when
-        Offer offer = offerController.addOffer(offerRequest);
+        Offer offer = offerService.addNewOffer(offerRequest);
 
         //then
-        System.out.println(offer);
-        assertEquals(BigDecimal.valueOf(60), offer.getTotalAmount());
+        assertEquals(BigDecimal.valueOf(0.0), offer.getTotalAmount());
     }
 
 
@@ -94,11 +109,20 @@ class OfferControllerTest {
                 .thenReturn(Optional.of(product1));
         when(productRepository.findById(2L))
                 .thenReturn(Optional.of(product2));
+        CurrencyExchangeResponse currencyExchangeResponse = CurrencyExchangeResponse.builder()
+                .result(CurrencyExchangeResult.builder()
+                        .convertedAmount(0.0)
+                        .build())
+                .build();
+        when(restTemplate.exchange(any(), eq(CurrencyExchangeResponse.class)))
+                .thenReturn(new ResponseEntity<>(currencyExchangeResponse, HttpStatusCode.valueOf(200)));
+
 
         //when
         //then
-        RuntimeException exception = assertThrows(BadInputException.class, () -> offerController.addOffer(offerRequest));
+        RuntimeException exception = assertThrows(BadInputException.class, () -> offerService.addNewOffer(offerRequest));
         assertEquals("Quantity of Product 2 is not sufficient", exception.getMessage());
         verify(productRepository, times(2)).findById(anyLong());
     }
+
 }
